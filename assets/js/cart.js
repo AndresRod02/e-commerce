@@ -185,7 +185,7 @@ function printHome() {
           <span class="home__quantity">${products[0].quantity} unidades</span>
           </div>
           <div class="home__btns">
-            <a href="#" class="button button--transparent button--small">
+            <a href="#products" class="button button--transparent button--small">
               Descubrir
             </a>
 
