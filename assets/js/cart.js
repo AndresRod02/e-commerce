@@ -132,10 +132,10 @@ const db = [
   }
 ];
 
-const products = window.localStorage.getItem("productsDB")
-? JSON.parse(window.localStorage.getItem("productsDB"))
-: db;
-
+// const products = window.localStorage.getItem("productsDB")
+// ? JSON.parse(window.localStorage.getItem("productsDB"))
+// : db;
+const products = db;
 
 // #2 Pintar los productos en el DOM
 const productContainer = document.getElementById("products__content");
@@ -367,7 +367,7 @@ function removeFromCart(id, qty = 1) {
     } else {
       const confirm = Swal.fire({
         title: '¿Estás seguro?',
-        text: "No puedes revertir esta acción",
+        text: "Eliminarás la última existencia del producto, siempre puedes volver a agregarlo",
         icon: 'warning',
         iconColor: '#fb2942',
         showCancelButton: true,
@@ -395,8 +395,32 @@ function removeFromCart(id, qty = 1) {
 // #6 Eliminar del carrito
 function deleteFromCart(id) {
   const article = cart.find((a) => a.id === id);
-  cart.splice(cart.indexOf(article), 1);
-  printCart();
+
+  if (article) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Eliminarás el producto del carrito",
+      icon: 'warning',
+      iconColor: '#fb2942',
+      showCancelButton: true,
+      confirmButtonColor: '#000000',
+      cancelButtonColor: '#fb2942',
+      confirmButtonText: 'Eliminar producto',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Eliminado',
+          text: 'El producto ha sido eliminado',
+          icon: 'success',
+          iconColor: '#fb2942',
+          confirmButtonColor: '#fb2942',
+        })
+        cart = cart.filter((a) => a.id !== id);
+      }
+      printCart();
+    });
+  }
 }
 
 // #7 Contar Artículos
@@ -415,9 +439,24 @@ function totalAmount() {
 
 // #9 Limpiar Carrito
 function clearCart() {
-  cart = [];
-  printCart();
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "Eliminarás todos los productos del carrito",
+    icon: 'warning',
+    iconColor: '#fb2942',
+    showCancelButton: true,
+    confirmButtonColor: '#000000',
+    cancelButtonColor: '#fb2942',
+    confirmButtonText: 'Borrar todo',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      cart = [];
+      printCart();
+    }
+  });
 }
+
 
 // #10 Comprar
 function checkout() {
