@@ -456,7 +456,10 @@ function clearCart() {
     }
   });
 }
-
+function clearCheckOut() {
+  cart = []
+  printCart();
+}
 
 // #10 Comprar
 function checkout() {
@@ -465,7 +468,7 @@ function checkout() {
 
     product.quantity -= article.qty;
   });
-  clearCart();
+  clearCheckOut();
   printProducts();
   printHome();
   printFilter();
